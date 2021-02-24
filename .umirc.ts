@@ -6,4 +6,11 @@ export default defineConfig({
   },
   routes: routes,
   fastRefresh: {},
+  proxy: {
+    '/api/': {
+      'target': 'http://119.45.187.33:8000',
+      'changeOrigin': true,
+      'pathRewrite': { '^/api': '' },
+    },
+  },
 });
