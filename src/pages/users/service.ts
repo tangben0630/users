@@ -1,9 +1,11 @@
-import { request } from 'umi'
-import axios from 'axios'
+import { request } from 'umi';
+import axios from 'axios';
 
-export const getListData = async () => {
-  const res = await axios.get('/api/api/blog/list')
-  console.log(res, 'qiqngqiu');
+export const getListData = async (a: any, s: any) => {
+  console.log(a, 'aaa你是哪里传进来的参数呢？', s);
+
+  const res = await request('/api/api/blog/list');
+  console.log(res.data, 'qiqngqiu');
 
   const data = [
     {
@@ -29,11 +31,11 @@ export const getListData = async () => {
     },
     {
       key: '4',
-      name: res.data.data[0].con,
+      name: res.data[0].con,
       age: 32,
-      address: res.data.data[0].title,
+      address: res.data[0].title,
       tags: ['cool', 'teacher'],
     },
   ];
-  return data
-}
+  return data;
+};

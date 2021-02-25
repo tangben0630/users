@@ -1,0 +1,8 @@
+1，有点类似vuex
+
+model {
+  state:{},
+  reducer:{},
+  effect:{},
+  subscriptions:{}
+}

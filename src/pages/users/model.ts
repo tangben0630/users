@@ -1,6 +1,5 @@
 import { Effect, Reducer, Subscription } from 'umi';
-import axios from 'axios'
-import { getListData } from './service'
+import { getListData } from './service';
 export interface IndexModelState {
   name: string;
 }
@@ -18,7 +17,7 @@ export interface IndexModelType {
     // 启用 immer 之后
     // save: ImmerReducer<IndexModelState>;
   };
-  subscriptions: { aaaa: Subscription };
+  subscriptions: { aaaa: Subscription; bbbb: Subscription };
 }
 const data = [
   {
@@ -45,49 +44,51 @@ const data = [
 ];
 
 const UserModel: IndexModelType = {
-  namespace: 'users',//当前model唯一标识名
+  namespace: 'users', //当前model唯一标识名
   state: {
-    name: ""
-  },//数据
+    name: '',
+  }, //数据
   reducers: {
     save(state, action) {
-      axios.get('/api/api/blog/list').then(res => {
-      })
       return {
         ...state,
         ...action.payload,
-        list: data
-      }
+        list: data,
+      };
     },
     aaa(state, action) {
+      console.log(action, 'action.payload');
+
       return {
         ...state,
         ...action.payload,
-        list: action.payload
-      }
-    }
-  },//reducers
+        list: action.payload,
+      };
+    },
+  }, //reducers
   effects: {
-    *query() { },
-    *getList({ payload }, { call, put }) {//首先，接口那数据
-      const resData = yield call(getListData)
-      const res = yield put({ type: 'aaa', payload: resData })
+    *query() {},
+    *getList({ payload }, { call, put }) {
+      //首先，接口那数据
+      const resData = yield call(getListData, '123456', 'msg');
+      const res = yield put({ type: 'aaa', payload: resData, abc: 'abc' });
       console.log('yield getList');
-
-    }
-  },//副作用
+    },
+  }, //副作用
   subscriptions: {
     aaaa({ history, dispatch }) {
       if (history.location.pathname === '/users') {
       }
       return history.listen(({ pathname }) => {
         if (pathname === '/users') {
-          dispatch({ type: 'getList' })
+          dispatch({ type: 'getList' });
         }
-      })
-
-    }
-  }//订阅
+      });
+    },
+    bbbb({ history, dispatch }) {
+      console.log('你不会也跟着运行吧？');
+    },
+  }, //订阅
 };
 
 export default UserModel;

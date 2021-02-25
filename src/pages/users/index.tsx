@@ -1,11 +1,18 @@
-import React from 'react'
+import React, { useState } from 'react';
 import { Table, Tag, Space } from 'antd';
 import { connect } from 'umi';
-
+import UserModal from './commponents/UserModal';
 
 const Home: React.FC = (props: any) => {
-  console.log(props, '000');
-
+  const [isShowModal, setIsShowModal] = useState<Boolean>(false);
+  const [data, setData] = useState();
+  const showModal = (data: any) => {
+    setIsShowModal(true);
+    setData(data);
+  };
+  const closeModal = () => {
+    setIsShowModal(false);
+  };
   const columns = [
     {
       title: 'Name',
@@ -14,7 +21,7 @@ const Home: React.FC = (props: any) => {
       render: (text: any) => <a>{text}</a>,
     },
     {
-      title: 'Age',
+      title: 'Age123',
       dataIndex: 'age',
       key: 'age',
     },
@@ -49,19 +56,32 @@ const Home: React.FC = (props: any) => {
       render: (text: any, record: any) => (
         <Space size="middle">
           <a>Invite {record.name}</a>
-          <a>Delete</a>
+          <a
+            onClick={() => {
+              showModal(record);
+            }}
+          >
+            Delete
+          </a>
         </Space>
       ),
     },
   ];
-  return <div className='list-table'>
-    <Table columns={columns} dataSource={props.users.list} />
-  </div>
-}
+  return (
+    <div className="list-table">
+      <Table columns={columns} dataSource={props.users.list} />
+      <UserModal
+        isShow={isShowModal}
+        closeModal={closeModal}
+        data={data}
+      ></UserModal>
+    </div>
+  );
+};
 const mapStateToProps = (state: any) => {
   return {
-    users: state.users
-  }
-}
+    users: state.users,
+  };
+};
 
-export default connect(mapStateToProps)(Home)
+export default connect(mapStateToProps)(Home);
